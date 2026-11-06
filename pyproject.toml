@@ -1,0 +1,67 @@
+[project]
+name = "pywhisper-dictation"
+version = "0.0.0"
+description = "Local push-to-talk dictation: microphone to whisper.cpp to stdout, nothing else"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+license-files = ["LICENSE.md"]
+authors = [{ name = "Michael Haynes" }]
+keywords = ["dictation", "speech-to-text", "whisper", "whisper.cpp", "cli"]
+classifiers = [
+    "Development Status :: 1 - Planning",
+    "Environment :: Console",
+    "Intended Audience :: End Users/Desktop",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Multimedia :: Sound/Audio :: Speech",
+    "Topic :: Utilities",
+]
+# pywhispercpp is pinned exactly: its wheel bundles whisper.cpp, the engine (docs/design.md).
+dependencies = [
+    "pywhispercpp==1.5.1",
+    "rich>=13.0",
+    "rich-argparse>=1.4",
+    "sounddevice>=0.5.6",
+    "webrtcvad-wheels>=2.0.14",
+]
+
+[project.scripts]
+pywhisper-dictation = "pywhisper_dictation.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/antimike/pywhisper-dictation"
+Repository = "https://github.com/antimike/pywhisper-dictation"
+Issues = "https://github.com/antimike/pywhisper-dictation/issues"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0",
+    "ruff>=0.6",
+]
+
+[build-system]
+requires = ["uv_build>=0.7"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-name = "pywhisper_dictation"
+module-root = "src"
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+# Docs keep their own alignment in code blocks.
+extend-exclude = ["*.md"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "RUF"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra -m 'not integration'"
+markers = ["integration: needs a real model or audio device; run by hand (-m integration)"]

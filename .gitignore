@@ -24,3 +24,7 @@ mise.local.toml
 .beads-credential-key
 .dolt/
 *.gate.lock*
+
+# Beads / Dolt files (added by bd init)
+*.db
+.beads/proxieddb/

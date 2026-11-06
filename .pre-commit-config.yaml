@@ -1,0 +1,21 @@
+# Block commits that stage secrets, and keep the code linted and formatted.
+# `system` hooks: gitleaks from PATH, ruff from the project venv (`uv sync` first).
+# Install per clone: `pre-commit install`.
+repos:
+  - repo: local
+    hooks:
+      - id: gitleaks
+        name: gitleaks (staged)
+        entry: gitleaks git --pre-commit --staged --redact --no-banner
+        language: system
+        pass_filenames: false
+      - id: ruff-check
+        name: ruff check
+        entry: uv run --frozen ruff check --force-exclude
+        language: system
+        types_or: [python, pyi]
+      - id: ruff-format
+        name: ruff format --check
+        entry: uv run --frozen ruff format --check --force-exclude
+        language: system
+        types_or: [python, pyi]
